@@ -5,12 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import post.example.post.entity.Category;
-import post.example.post.entity.Post;
 import post.example.post.exception.CustomException;
 import post.example.post.model.request.CategoryRequest;
-import post.example.post.model.request.PostRequest;
 import post.example.post.model.response.CategoryResponse;
-import post.example.post.model.response.PostResponse;
 import post.example.post.repository.CategoryRepository;
 import post.example.post.service.CategoryService;
 
@@ -44,13 +41,25 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryResponse create(CategoryRequest categoryRequest) {
-        Category category = new Category();
-        category.setName(categoryRequest.getName());
-        category.setSlug(categoryRequest.getSlug());
-        category.setCreated_at(categoryRequest.getCreated_at());
-        category.setUpdated_at(categoryRequest.getUpdated_at());
-        Category res = categoryRepository.save(category);
-        return mappingCategoryToCategoryResponse(res);
+        if (categoryRepository.findByName(categoryRequest.getName()).isPresent()) {
+            throw new CustomException("Category with name : " + categoryRequest.getName() + " is already exists",
+                    "CATEGORY_NAME_EXISTS", 400);
+        }
+
+//        Category category = new Category();
+//        category.setName(categoryRequest.getName());
+//        category.setSlug(categoryRequest.getSlug());
+//        category.setCreated_at(categoryRequest.getCreated_at());
+//        category.setUpdated_at(categoryRequest.getUpdated_at());
+//        Category res = categoryRepository.save(category);
+
+        Category category = categoryRepository.save(mappingCategoryRequestToCategory(categoryRequest, new Category()));
+        return mappingCategoryToCategoryResponse(category);
+    }
+
+    public Category mappingCategoryRequestToCategory(CategoryRequest categoryRequest, Category category) {
+        BeanUtils.copyProperties(categoryRequest, category);
+        return category;
     }
 
     public CategoryResponse mappingCategoryToCategoryResponse(Category category) {
