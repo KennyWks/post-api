@@ -7,17 +7,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostResponse {
+public class UserResponse {
 
     private long id;
-    private UserResponse user;
-    private CategoryResponse category;
-    private String title;
-    private String slug;
-    private String image;
-    private String excerpt;
-    private String body;
-    private String published_at;
+    private String name;
+    private String username;
+    private String email;
+    private String email_verified_at;
+    private String password;
+    private long role_id;
+    private String remember_token;
     private String created_at;
     private String updated_at;
 }

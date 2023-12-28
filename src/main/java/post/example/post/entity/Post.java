@@ -31,12 +31,6 @@ public class Post {
     @Column(nullable = false)
     private String body;
 
-    @Column(nullable = false)
-    private long user_id;
-
-//    @Column(nullable = false)
-//    private long category_id;
-
     @Column()
     private String published_at;
 
@@ -46,8 +40,8 @@ public class Post {
     @Column()
     private String updated_at;
 
-//    @ManyToOne
-//    private Users user;
+    @ManyToOne
+    private Users user;
 
     @ManyToOne
     private Category category;

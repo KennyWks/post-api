@@ -10,6 +10,7 @@ import post.example.post.model.request.PostRequest;
 import post.example.post.model.response.CategoryResponse;
 import post.example.post.model.response.PostResponse;
 import org.springframework.stereotype.Service;
+import post.example.post.model.response.UserResponse;
 import post.example.post.repository.CategoryRepository;
 import post.example.post.repository.PostRepository;
 import post.example.post.service.PostService;
@@ -38,8 +39,8 @@ public class PostServiceImpl implements PostService {
     public PostResponse getById(long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new CustomException(
-                        "Country with given id " + id + " Not Found",
-                        "COUNTRY_NOT_FOUND", 404));
+                        "Post with given id " + id + " Not Found",
+                        "POST_NOT_FOUND", 404));
         return mappingPostToPostResponse(post);
     }
 
@@ -55,9 +56,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse delete(long id) {
-        PostResponse country = getById(id);
+        PostResponse post = getById(id);
         postRepository.deleteById(id);
-        return country;
+        return post;
     }
 
     public Post mappingPostRequestToPost(PostRequest postRequest, Post post) {
@@ -77,6 +78,12 @@ public class PostServiceImpl implements PostService {
             CategoryResponse categoryResponse = new CategoryResponse();
             BeanUtils.copyProperties(post.getCategory(), categoryResponse);
             postResponse.setCategory(categoryResponse);
+        }
+
+        if (post.getUser() != null){
+            UserResponse userResponse = new UserResponse();
+            BeanUtils.copyProperties(post.getUser(), userResponse);
+            postResponse.setUser(userResponse);
         }
         return postResponse;
     }

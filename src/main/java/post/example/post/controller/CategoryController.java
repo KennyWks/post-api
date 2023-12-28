@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import post.example.post.model.request.CategoryRequest;
 import post.example.post.model.response.CategoryResponse;
-import post.example.post.model.response.CategoryResponse;
 import post.example.post.service.CategoryService;
 
 import java.util.List;
@@ -33,8 +32,13 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.create(categoryRequest),HttpStatus.CREATED);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<CategoryResponse> delete(@PathVariable long id){
-//        return new ResponseEntity<>(categoryService.delete(id),HttpStatus.OK);
-//    }
+    @PutMapping("/{id}")
+    ResponseEntity<CategoryResponse> update(@PathVariable long id, @RequestBody CategoryRequest categoryRequest){
+        return new ResponseEntity<>(categoryService.update(id,categoryRequest),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CategoryResponse> delete(@PathVariable long id){
+        return new ResponseEntity<>(categoryService.delete(id),HttpStatus.OK);
+    }
 }

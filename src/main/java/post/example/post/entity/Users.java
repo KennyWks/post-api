@@ -48,6 +48,6 @@ public class Users {
     @Column(nullable = false)
     private String updated_at;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Post> post;
+    @OneToMany(mappedBy = "user")
+    private List<Post> post;
 }

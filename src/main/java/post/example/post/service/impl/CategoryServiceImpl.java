@@ -34,8 +34,8 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryResponse getById(long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CustomException(
-                        "Country with given id " + id + " Not Found",
-                        "COUNTRY_NOT_FOUND", 404));
+                        "Category with given id " + id + " Not Found",
+                        "CATEGORY_NOT_FOUND", 404));
         return mappingCategoryToCategoryResponse(category);
     }
 
@@ -55,6 +55,37 @@ public class CategoryServiceImpl implements CategoryService{
 
         Category category = categoryRepository.save(mappingCategoryRequestToCategory(categoryRequest, new Category()));
         return mappingCategoryToCategoryResponse(category);
+    }
+
+    @Override
+    public CategoryResponse update(long id, CategoryRequest categoryRequest) {
+        CategoryResponse oldData = getById(id);
+
+        Category category = new Category();
+
+        category.setId(oldData.getId());
+
+        category.setName(oldData.getName());
+        category.setName(categoryRequest.getName());
+
+        category.setSlug(oldData.getSlug());
+        category.setSlug(categoryRequest.getSlug());
+
+        category.setCreated_at(oldData.getCreated_at());
+        category.setCreated_at(categoryRequest.getCreated_at());
+
+        category.setUpdated_at(oldData.getUpdated_at());
+        category.setUpdated_at(categoryRequest.getUpdated_at());
+
+        Category res = categoryRepository.save(category);
+        return mappingCategoryToCategoryResponse(res);
+    }
+
+    @Override
+    public CategoryResponse delete(long id) {
+        CategoryResponse category = getById(id);
+        categoryRepository.deleteById(id);
+        return category;
     }
 
     public Category mappingCategoryRequestToCategory(CategoryRequest categoryRequest, Category category) {
