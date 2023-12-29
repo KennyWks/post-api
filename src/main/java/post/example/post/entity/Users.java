@@ -37,15 +37,15 @@ public class Users {
     private String password;
 
     @Column(nullable = false)
-    private int role_id;
+    private long role_id;
 
-    @Column(nullable = false)
+    @Column()
     private String remember_token;
 
-    @Column(nullable = false)
+    @Column()
     private String created_at;
 
-    @Column(nullable = false)
+    @Column()
     private String updated_at;
 
     @OneToMany(mappedBy = "user")
