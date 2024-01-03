@@ -10,6 +10,7 @@ import post.example.post.model.request.UserRequest;
 import post.example.post.model.response.UserResponse;
 import post.example.post.repository.UserRepository;
 import post.example.post.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +18,8 @@ import post.example.post.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserResponse getById(long id) {
         Users user = userRepository.findById(id)
@@ -46,10 +49,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail_verified_at(oldData.getEmail_verified_at());
         user.setEmail_verified_at(userRequest.getEmail_verified_at());
 
-//        PasswordEncoder
-
+//      PasswordEncoder
         user.setPassword(oldData.getPassword());
-        user.setPassword(userRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         user.setRole_id(oldData.getRole_id());
         user.setRole_id(userRequest.getRole_id());
