@@ -9,9 +9,7 @@ public interface PostService {
 
     List<PostResponse> getAll();
     PostResponse getById(long id);
-
     PostResponse create(PostRequest postRequest);
-    //    CountryResponse create(CountryRequest countryRequest);
-    //    CountryResponse update(long id, CountryRequest countryRequest);
+    PostResponse update(long id, PostRequest postRequest);
     PostResponse delete(long id);
 }

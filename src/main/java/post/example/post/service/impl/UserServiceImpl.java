@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 import post.example.post.entity.Users;
 import post.example.post.exception.CustomException;
 import post.example.post.model.request.UserRequest;
+import post.example.post.model.response.RoleResponse;
 import post.example.post.model.response.UserResponse;
 import post.example.post.repository.UserRepository;
 import post.example.post.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse getById(long id) {
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
                         "USER_NOT_FOUND", 404));
         return mappingUserToUserResponse(user);
     }
+
+
 
     @Override
     public UserResponse update(long id, UserRequest userRequest) {
@@ -51,10 +54,11 @@ public class UserServiceImpl implements UserService {
 
 //      PasswordEncoder
         user.setPassword(oldData.getPassword());
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+//        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setPassword(userRequest.getPassword());
 
-        user.setRole_id(oldData.getRole_id());
-        user.setRole_id(userRequest.getRole_id());
+//        user.setRole_id(oldData.getRole_id());
+//        user.setRole_id(userRequest.getRole_id());
 
         Users res = userRepository.save(user);
         return mappingUserToUserResponse(res);
@@ -63,6 +67,12 @@ public class UserServiceImpl implements UserService {
     public UserResponse mappingUserToUserResponse(Users users) {
         UserResponse userResponse = new UserResponse();
         BeanUtils.copyProperties(users, userResponse);
+
+        if (users.getRole() != null){
+            RoleResponse roleResponse = new RoleResponse();
+            BeanUtils.copyProperties(users.getRole(), roleResponse);
+            userResponse.setRole(roleResponse);
+        }
         return userResponse;
     }
 }

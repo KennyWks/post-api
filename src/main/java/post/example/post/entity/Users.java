@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,9 +34,6 @@ public class Users {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private long role_id;
-
     @Column()
     private String remember_token;
 
@@ -48,6 +43,6 @@ public class Users {
     @Column()
     private String updated_at;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> post;
+    @ManyToOne
+    private Role role;
 }

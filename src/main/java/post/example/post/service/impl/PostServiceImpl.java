@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import post.example.post.entity.Category;
 import post.example.post.entity.Post;
 import lombok.AllArgsConstructor;
+import post.example.post.entity.Users;
 import post.example.post.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import post.example.post.model.request.PostRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import post.example.post.model.response.UserResponse;
 import post.example.post.repository.CategoryRepository;
 import post.example.post.repository.PostRepository;
+import post.example.post.repository.UserRepository;
 import post.example.post.service.PostService;
 
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private UserRepository userRepository;
     private CategoryRepository categoryRepository;
 
     @Override
@@ -55,9 +58,33 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostResponse update(long id, PostRequest postRequest) {
+
+        PostResponse oldData = getById(id);
+
+        System.out.println(postRequest.getUser_id());
+
+        // Mapping Post Response -> Post
+        Post post = mappingPostResponseToPost(oldData);
+
+        // Mapping Post Request -> Post
+        post = mappingPostRequestToPost(postRequest, post);
+
+        postRepository.save(post);
+
+        return mappingPostToPostResponse(post);
+    }
+
+    @Override
     public PostResponse delete(long id) {
         PostResponse post = getById(id);
         postRepository.deleteById(id);
+        return post;
+    }
+
+    public Post mappingPostResponseToPost(PostResponse postResponse) {
+        Post post = new Post();
+        BeanUtils.copyProperties(postResponse, post);
         return post;
     }
 
@@ -65,7 +92,9 @@ public class PostServiceImpl implements PostService {
         BeanUtils.copyProperties(postRequest, post);
 
         Category category = categoryRepository.findById(postRequest.getCategory_id()).get();
+        Users user = userRepository.findById(postRequest.getUser_id()).get();
 
+        post.setUser(user);
         post.setCategory(category);
         return post;
     }
