@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import post.example.post.model.request.RegistrationRequest;
 import post.example.post.model.request.UserRequest;
 import post.example.post.model.response.UserResponse;
 import post.example.post.service.UserService;
@@ -20,8 +21,13 @@ public class UserController {
         return new ResponseEntity(userService.getById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<UserResponse> update(@PathVariable long id, @RequestBody UserRequest userRequest){
-        return new ResponseEntity<>(userService.update(id,userRequest),HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<EmployeeResponse> create(@RequestBody RegistrationRequest registrationRequest){
+        return new ResponseEntity<>(employeeService.create(registrationRequest), HttpStatus.CREATED);
     }
+
+//    @PutMapping("/{id}")
+//    ResponseEntity<UserResponse> update(@PathVariable long id, @RequestBody UserRequest userRequest){
+//        return new ResponseEntity<>(userService.update(id,userRequest),HttpStatus.OK);
+//    }
 }

@@ -41,7 +41,7 @@ public class Post {
     private String updated_at;
 
     @ManyToOne
-    private Users user;
+    private UserDetails userDetails;
 
     @ManyToOne
     private Category category;

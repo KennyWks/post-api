@@ -12,8 +12,8 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
-public class Users {
+@Table(name = "user_details")
+public class UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +23,16 @@ public class Users {
     private String name;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String email;
+
+//  @Column(nullable = false)
+//  private String username;
+
+//  @Column(nullable = false)
+//  private String password;
 
     @Column()
     private String email_verified_at;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column()
     private String remember_token;
@@ -43,6 +43,9 @@ public class Users {
     @Column()
     private String updated_at;
 
-    @ManyToOne
-    private Role role;
+//  @ManyToOne
+//  private Role role;
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private User user;
 }

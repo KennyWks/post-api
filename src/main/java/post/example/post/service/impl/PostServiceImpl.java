@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 import post.example.post.entity.Category;
 import post.example.post.entity.Post;
 import lombok.AllArgsConstructor;
-import post.example.post.entity.Users;
+import post.example.post.entity.UserDetails;
 import post.example.post.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import post.example.post.model.request.PostRequest;
@@ -92,9 +92,9 @@ public class PostServiceImpl implements PostService {
         BeanUtils.copyProperties(postRequest, post);
 
         Category category = categoryRepository.findById(postRequest.getCategory_id()).get();
-        Users user = userRepository.findById(postRequest.getUser_id()).get();
+        UserDetails userDetails = userRepository.findById(postRequest.getUser_id()).get();
 
-        post.setUser(user);
+        post.setUserDetails(userDetails);
         post.setCategory(category);
         return post;
     }
@@ -109,9 +109,9 @@ public class PostServiceImpl implements PostService {
             postResponse.setCategory(categoryResponse);
         }
 
-        if (post.getUser() != null){
+        if (post.getUserDetails() != null){
             UserResponse userResponse = new UserResponse();
-            BeanUtils.copyProperties(post.getUser(), userResponse);
+            BeanUtils.copyProperties(post.getUserDetails(), userResponse);
             postResponse.setUser(userResponse);
         }
         return postResponse;

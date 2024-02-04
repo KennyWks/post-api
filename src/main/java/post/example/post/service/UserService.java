@@ -7,5 +7,5 @@ public interface UserService {
 
     UserResponse getById(long id);
 
-    UserResponse update(long id, UserRequest usertRequest);
+//    UserResponse update(long id, UserRequest usertRequest);
 }
